@@ -1,0 +1,28 @@
+llm:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.0
+  max_tokens: 1200
+  api_key_env: OPENAI_API_KEY
+  # base_url: https://your-proxy/v1
+  # extra:
+  #   timeout: 60
+
+data:
+  reports_dir: ./data/reports
+  events_file: ./data/events.csv
+  market_dir: ./data/market
+
+trading:
+  industries: [新能源, 半导体, 银行, 医药]
+  start_date: "2025-01-01"
+  end_date: "2025-12-31"
+  lookback_days: 20
+  initial_cash: 1000000
+  max_position: 0.35
+  transaction_cost_bps: 10
+  rebalance_frequency: D
+
+output:
+  output_dir: ./outputs/run_01
+  save_daily_positions: true

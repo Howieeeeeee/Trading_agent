@@ -23,8 +23,15 @@ class LoadedData:
 
 
 class DataLoader:
-    def __init__(self, reports_dir: Path, events_file: Path, market_dir: Path):
-        self.reports_dir = reports_dir
+    def __init__(
+        self,
+        report_raw_dir: Path | None,
+        report_summary_dir: Path | None,
+        events_file: Path,
+        market_dir: Path,
+    ):
+        self.report_raw_dir = report_raw_dir
+        self.report_summary_dir = report_summary_dir
         self.events_file = events_file
         self.market_dir = market_dir
 
@@ -37,10 +44,11 @@ class DataLoader:
     def load_reports(self, industries: list[str]) -> list[ReportDoc]:
         industries_set = set(industries)
         docs: list[ReportDoc] = []
-        if not self.reports_dir.exists():
+        source_dir = self._resolve_report_source_dir()
+        if source_dir is None:
             return docs
 
-        candidates = sorted(self.reports_dir.glob("*"))
+        candidates = sorted(source_dir.glob("*"))
         for file in candidates:
             if file.suffix.lower() not in {".pdf", ".txt", ".md"}:
                 continue
@@ -65,6 +73,13 @@ class DataLoader:
                 )
             )
         return docs
+
+    def _resolve_report_source_dir(self) -> Path | None:
+        if self.report_summary_dir and self.report_summary_dir.exists():
+            return self.report_summary_dir
+        if self.report_raw_dir and self.report_raw_dir.exists():
+            return self.report_raw_dir
+        return None
 
     def load_events(self, industries: list[str]) -> list[EventRecord]:
         industries_set = set(industries)

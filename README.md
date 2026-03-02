@@ -1,56 +1,35 @@
 # Industry Trading Agent (LangChain)
 
-一个基于 LangChain 的行业资产配置与仓位管理回测系统。
+面向“代码与算法走 Git、原始数据留在服务器”的行业交易回测系统。
 
-目标：
-- 输入行业行情、重大事件、券商研报
-- 每个交易日自动检索相关上下文
-- 调用可替换 LLM 生成行业权重
-- 在模拟交易环境中执行并输出收益指标
+## 1. 你当前要的工作方式
 
-## 1. 目录结构
+- 本地仓库：只维护代码、配置模板、运行脚本
+- Linux 服务器：存放原始数据（研报、摘要、事件、行情）
+- Git 同步：你把代码同步到服务器后，只改配置里的绝对路径即可运行
+- 结果输出：写入仓库内 `outputs/...`，可选择提交回 Git
 
-```text
-.
-├── config/
-│   └── example.yaml
-├── data/
-│   ├── events.csv
-│   ├── market/
-│   │   ├── 新能源.csv
-│   │   ├── 半导体.csv
-│   │   ├── 银行.csv
-│   │   └── 医药.csv
-│   └── reports/
-│       ├── 0001_新能源_20250801.pdf
-│       ├── 0002_半导体_20250803.pdf
-│       └── ...
-└── src/industry_trading_agent/
-```
+## 2. 数据路径配置
 
-## 2. 数据格式
+使用 [config/example.yaml](/Users/howie/Documents/New project/config/example.yaml) 或 [config/rule_based.yaml](/Users/howie/Documents/New project/config/rule_based.yaml)。
 
-### 2.1 研报目录（`data/reports`）
-- 支持：`.pdf` / `.txt` / `.md`
-- 文件名规则：`编号_行业_YYYYMMDD.xxx`
-- 示例：`0345_半导体_20250801.pdf`
+`data` 字段：
+- `report_raw_dir`: 原始研报目录（可为空）
+- `report_summary_dir`: 研报摘要目录（可为空，且优先读取）
+- `events_file`: 事件文件路径
+- `market_dir`: 行情目录路径（每行业一个 CSV，文件名 `行业.csv`）
 
-### 2.2 事件文件（`data/events.csv`）
-必需列：
-- `date` (YYYY-MM-DD)
-- `industry`
-- `title`
-- `content`
+说明：
+- 系统优先用 `report_summary_dir`；如果不存在则回退到 `report_raw_dir`
+- 两者都不存在时，系统会在“无研报上下文”下继续运行
 
-也支持 `json/jsonl/txt`：
-- `json/jsonl` 每条记录字段一致
-- `txt` 每行格式：`YYYY-MM-DD|industry|title|content`
+## 3. 研报文件命名规则
 
-### 2.3 行情目录（`data/market`）
-- 每个行业一个 CSV，文件名 `行业.csv`
-- 必需列：`date`, `close`
+研报文件名保持：`编号_行业_YYYYMMDD.xxx`
 
-## 3. 安装
+支持扩展名：`.pdf` / `.txt` / `.md`
+
+## 4. 运行
 
 ```bash
 python -m venv .venv
@@ -58,56 +37,30 @@ source .venv/bin/activate
 pip install -e .
 ```
 
-## 4. 运行
-
-设置模型密钥（OpenAI 示例）：
+OpenAI 模型：
 
 ```bash
 export OPENAI_API_KEY="your_key"
-```
-
-执行回测：
-
-```bash
 trade-sim --config config/example.yaml
 ```
 
-## 5. 输出
+离线联调（不依赖外部 API）：
 
-默认写入 `output.output_dir`，包括：
-- `daily_records.csv`：每日 NAV、PnL、换手、执行仓位
-- `decisions.json`：每日 LLM 推理与目标仓位
-- `summary.json`：总收益、年化收益、波动率、夏普、最大回撤
-
-## 6. 可替换 LLM
-
-在 `config` 中切换：
-- `llm.provider: openai`
-- `llm.provider: rule_based`（离线规则模型，便于先联调流程）
-- 或 `llm.provider: custom`，并在 `llm.extra` 提供 LangChain 兼容 `BaseChatModel` 类路径
-
-示例：
-
-```yaml
-llm:
-  provider: custom
-  extra:
-    class_path: your_package.your_module:YourChatModel
-    init_kwargs:
-      model: your_model
-      temperature: 0.0
+```bash
+trade-sim --config config/rule_based.yaml
 ```
 
-## 7. 系统流程
+## 5. 输出结果
 
-1. 加载外部文件（研报、事件、行情）
-2. 按交易日构建窗口上下文（lookback）
-3. LLM 输出行业目标权重 JSON
-4. 模拟交易环境执行调仓与交易成本
-5. 记录收益并导出结果
+输出目录由 `output.output_dir` 控制，默认在仓库内：
+- `daily_records.csv`
+- `decisions.json`
+- `summary.json`
 
-## 8. 注意
+## 6. 当前已支持的数据输入
 
-- 当前策略是 long-only 行业权重分配。
-- 风控约束：单行业上限 `max_position`，并自动归一化。
-- 如果某天缺少某行业行情，该行业当日收益按 0 处理。
+- 研报：目录扫描（按命名规则过滤）
+- 事件：`csv/json/jsonl/txt`
+- 行情：每行业一个 CSV，必须包含 `date, close`
+
+后续你给出更细的数据格式后，我可以继续改 loader 适配。

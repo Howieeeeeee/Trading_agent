@@ -20,7 +20,8 @@ class LLMConfig:
 
 @dataclass
 class DataConfig:
-    reports_dir: Path
+    report_raw_dir: Path | None
+    report_summary_dir: Path | None
     events_file: Path
     market_dir: Path
 
@@ -79,7 +80,8 @@ def load_config(path: str | Path) -> AppConfig:
             extra=llm_raw.get("extra"),
         ),
         data=DataConfig(
-            reports_dir=Path(_require(data_raw, "reports_dir")),
+            report_raw_dir=Path(data_raw["report_raw_dir"]) if data_raw.get("report_raw_dir") else None,
+            report_summary_dir=Path(data_raw["report_summary_dir"]) if data_raw.get("report_summary_dir") else None,
             events_file=Path(_require(data_raw, "events_file")),
             market_dir=Path(_require(data_raw, "market_dir")),
         ),

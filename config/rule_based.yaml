@@ -3,9 +3,10 @@ llm:
   model: offline
 
 data:
-  reports_dir: ./data/reports
-  events_file: ./data/events.csv
-  market_dir: ./data/market
+  report_raw_dir: /data/quant/reports/raw
+  report_summary_dir: /data/quant/reports/summary
+  events_file: /data/quant/events/events.csv
+  market_dir: /data/quant/market
 
 trading:
   industries: [新能源, 半导体, 银行, 医药]

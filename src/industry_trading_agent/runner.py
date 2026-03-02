@@ -18,7 +18,8 @@ class BacktestRunner:
 
     def run(self) -> dict:
         loaded = DataLoader(
-            reports_dir=self.config.data.reports_dir,
+            report_raw_dir=self.config.data.report_raw_dir,
+            report_summary_dir=self.config.data.report_summary_dir,
             events_file=self.config.data.events_file,
             market_dir=self.config.data.market_dir,
         ).load_all(self.config.trading.industries)

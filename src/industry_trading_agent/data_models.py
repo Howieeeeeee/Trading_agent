@@ -19,6 +19,8 @@ class EventRecord:
     industry: str
     title: str
     content: str
+    report_date: date | None = None
+    confidence: float | None = None
 
 
 @dataclass

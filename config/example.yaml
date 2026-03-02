@@ -4,23 +4,23 @@ llm:
   temperature: 0.0
   max_tokens: 1200
   api_key_env: OPENAI_API_KEY
-  # base_url: https://your-proxy/v1
-  # extra:
-  #   timeout: 60
+  base_url: https://api2.aigcbest.top/v1
 
 data:
-  # 服务器上原始研报 PDF/TXT/MD 目录（可为空）
-  report_raw_dir: /data/quant/reports/raw
-  # 服务器上研报摘要目录（优先读取；可为空）
-  report_summary_dir: /data/quant/reports/summary
-  # 服务器上行业事件文件路径
-  events_file: /data/quant/events/events.csv
-  # 服务器上行业行情目录（每个行业一个 CSV，文件名=行业名.csv）
-  market_dir: /data/quant/market
+  report_raw_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_pdfs
+  report_summary_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_texts
+  events_file: /data/Graph_reasoning_Agent/Generate/significant_impact_events.csv
+  market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry
+  industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_match_test_report.csv
+  market_index_file: /data/Graph_reasoning_Agent/Generate/market_index_kline/沪深300__000300.csv
 
 trading:
-  industries: [新能源, 半导体, 银行, 医药]
-  start_date: "2025-01-01"
+  # 可为空；为空时使用 auto_select_industries
+  industries: []
+  auto_select_industries: true
+  auto_select_top_n: 8
+  min_event_count: 2
+  start_date: "2025-06-01"
   end_date: "2025-12-31"
   lookback_days: 20
   initial_cash: 1000000

@@ -9,10 +9,17 @@ from .data_models import EventRecord, ReportDoc
 
 
 class ContextRetriever:
-    def __init__(self, reports: list[ReportDoc], events: list[EventRecord], market_data: dict[str, pd.DataFrame]):
+    def __init__(
+        self,
+        reports: list[ReportDoc],
+        events: list[EventRecord],
+        market_data: dict[str, pd.DataFrame],
+        market_index: pd.DataFrame | None = None,
+    ):
         self.reports = reports
         self.events = events
         self.market_data = market_data
+        self.market_index = market_index
 
     def build_context(
         self,
@@ -50,6 +57,14 @@ class ContextRetriever:
                 f"- {industry}: window_return={ret:.2%}, annualized_vol~{vol:.2%}, "
                 f"last_close={close.iloc[-1]:.4f}, points={len(window)}"
             )
+
+        if self.market_index is not None:
+            idx_window = self.market_index[
+                (self.market_index["date"] >= pd.Timestamp(start_date)) & (self.market_index["date"] <= dt)
+            ].copy()
+            if not idx_window.empty:
+                idx_ret = idx_window["ret_1d"].sum()
+                lines.append(f"- benchmark(HS300): window_return~{idx_ret:.2%}, points={len(idx_window)}")
         return "\n".join(lines)
 
     def _event_summary(

@@ -24,6 +24,8 @@ class DataConfig:
     report_summary_dir: Path | None
     events_file: Path
     market_dir: Path
+    industry_match_file: Path | None = None
+    market_index_file: Path | None = None
 
 
 @dataclass
@@ -36,6 +38,9 @@ class TradingConfig:
     max_position: float = 0.35
     transaction_cost_bps: float = 10.0
     rebalance_frequency: str = "D"
+    auto_select_industries: bool = False
+    auto_select_top_n: int = 6
+    min_event_count: int = 1
 
 
 @dataclass
@@ -84,9 +89,11 @@ def load_config(path: str | Path) -> AppConfig:
             report_summary_dir=Path(data_raw["report_summary_dir"]) if data_raw.get("report_summary_dir") else None,
             events_file=Path(_require(data_raw, "events_file")),
             market_dir=Path(_require(data_raw, "market_dir")),
+            industry_match_file=Path(data_raw["industry_match_file"]) if data_raw.get("industry_match_file") else None,
+            market_index_file=Path(data_raw["market_index_file"]) if data_raw.get("market_index_file") else None,
         ),
         trading=TradingConfig(
-            industries=list(_require(trading_raw, "industries")),
+            industries=list(trading_raw.get("industries", [])),
             start_date=str(_require(trading_raw, "start_date")),
             end_date=str(_require(trading_raw, "end_date")),
             lookback_days=int(trading_raw.get("lookback_days", 20)),
@@ -94,6 +101,9 @@ def load_config(path: str | Path) -> AppConfig:
             max_position=float(trading_raw.get("max_position", 0.35)),
             transaction_cost_bps=float(trading_raw.get("transaction_cost_bps", 10.0)),
             rebalance_frequency=str(trading_raw.get("rebalance_frequency", "D")),
+            auto_select_industries=bool(trading_raw.get("auto_select_industries", False)),
+            auto_select_top_n=int(trading_raw.get("auto_select_top_n", 6)),
+            min_event_count=int(trading_raw.get("min_event_count", 1)),
         ),
         output=OutputConfig(
             output_dir=Path(output_raw.get("output_dir", "outputs")),

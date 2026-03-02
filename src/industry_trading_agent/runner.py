@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from datetime import date
 
 import pandas as pd
@@ -17,22 +18,33 @@ class BacktestRunner:
         self.config = config
 
     def run(self) -> dict:
-        loaded = DataLoader(
+        loader = DataLoader(
             report_raw_dir=self.config.data.report_raw_dir,
             report_summary_dir=self.config.data.report_summary_dir,
             events_file=self.config.data.events_file,
             market_dir=self.config.data.market_dir,
-        ).load_all(self.config.trading.industries)
+            industry_match_file=self.config.data.industry_match_file,
+            market_index_file=self.config.data.market_index_file,
+        )
+
+        all_events = loader.load_events(industries=None)
+        industries = _resolve_industries(self.config, all_events)
+
+        reports = loader.load_reports(industries)
+        events = [e for e in all_events if e.industry in set(industries)]
+        market_data = loader.load_market_data(industries)
+        market_index = loader.load_market_index()
 
         retriever = ContextRetriever(
-            reports=loaded.reports,
-            events=loaded.events,
-            market_data=loaded.market_data,
+            reports=reports,
+            events=events,
+            market_data=market_data,
+            market_index=market_index,
         )
 
         env = TradingEnvironment(
-            market_data=loaded.market_data,
-            industries=self.config.trading.industries,
+            market_data=market_data,
+            industries=industries,
             initial_cash=self.config.trading.initial_cash,
             max_position=self.config.trading.max_position,
             transaction_cost_bps=self.config.trading.transaction_cost_bps,
@@ -42,26 +54,32 @@ class BacktestRunner:
         agent = TradingAgent(llm=llm, trading_cfg=self.config.trading)
 
         trade_dates = _build_trade_dates(
-            loaded.market_data,
-            self.config.trading.industries,
+            market_data,
+            industries,
             self.config.trading.start_date,
             self.config.trading.end_date,
             self.config.trading.rebalance_frequency,
         )
+        if len(trade_dates) < 2:
+            raise ValueError("Not enough trade dates. Need at least 2 dates for T+1 execution.")
 
         decisions: list[dict] = []
         daily_records: list[dict] = []
 
-        for dt in trade_dates:
+        # T day decides position for T+1 day, to avoid look-ahead bias.
+        for i in range(len(trade_dates) - 1):
+            as_of_date = trade_dates[i]
+            exec_date = trade_dates[i + 1]
+
             context = retriever.build_context(
-                as_of_date=dt,
-                industries=self.config.trading.industries,
+                as_of_date=as_of_date,
+                industries=industries,
                 lookback_days=self.config.trading.lookback_days,
             )
 
             decision = agent.decide(
-                as_of_date=dt,
-                industries=self.config.trading.industries,
+                as_of_date=as_of_date,
+                industries=industries,
                 market_summary=context["market_summary"],
                 event_summary=context["event_summary"],
                 report_summary=context["report_summary"],
@@ -69,18 +87,20 @@ class BacktestRunner:
                 nav_history=env.nav_history,
             )
 
-            step = env.step(dt=dt, target_weights=decision.weights)
+            step = env.step(dt=exec_date, target_weights=decision.weights)
 
             decisions.append(
                 {
-                    "date": dt.isoformat(),
+                    "decision_date": as_of_date.isoformat(),
+                    "execute_date": exec_date.isoformat(),
                     "reasoning": decision.reasoning,
                     "weights": decision.weights,
                 }
             )
             daily_records.append(
                 {
-                    "date": dt.isoformat(),
+                    "decision_date": as_of_date.isoformat(),
+                    "execute_date": exec_date.isoformat(),
                     "nav_before": step.nav_before,
                     "nav_after": step.nav_after,
                     "pnl": step.pnl,
@@ -95,6 +115,7 @@ class BacktestRunner:
             final_nav=env.nav,
             daily_records=daily_records,
         )
+        result["industries"] = industries
 
         out_dir = self.config.output.output_dir
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -109,6 +130,31 @@ class BacktestRunner:
             "decisions_path": str(out_dir / "decisions.json"),
             "summary_path": str(out_dir / "summary.json"),
         }
+
+
+def _resolve_industries(config: AppConfig, events) -> list[str]:
+    if config.trading.industries:
+        return config.trading.industries
+
+    if not config.trading.auto_select_industries:
+        raise ValueError("No industries configured. Set trading.industries or enable auto_select_industries.")
+
+    start = pd.Timestamp(config.trading.start_date).date()
+    end = pd.Timestamp(config.trading.end_date).date()
+
+    counter: Counter[str] = Counter()
+    for e in events:
+        if start <= e.event_date <= end:
+            counter[e.industry] += 1
+
+    selected = [
+        industry
+        for industry, cnt in counter.most_common(config.trading.auto_select_top_n)
+        if cnt >= config.trading.min_event_count
+    ]
+    if not selected:
+        raise ValueError("Auto industry selection found no candidates in the window.")
+    return selected
 
 
 def _build_trade_dates(

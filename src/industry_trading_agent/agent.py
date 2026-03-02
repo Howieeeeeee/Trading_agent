@@ -36,7 +36,7 @@ class TradingAgent:
 
         system_prompt = (
             "You are a disciplined buy-side portfolio manager. "
-            "Task: allocate capital across industries to maximize risk-adjusted return over the next period. "
+            "Task: allocate capital across industries to maximize risk-adjusted return over the next period (T+1). "
             "Only use the supplied information. Avoid overfitting and excessive turnover."
         )
 
@@ -70,7 +70,10 @@ Return JSON only.
         messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
         raw = self.llm.invoke(messages)
 
-        parsed = self.parser.parse(raw.content)
+        try:
+            parsed = self.parser.parse(raw.content)
+        except Exception:
+            parsed = {"reasoning": "parser_fallback_equal_weight", "weights": {i: 1.0 for i in industries}}
         weights = self._post_process_weights(parsed.get("weights", {}), industries)
         reasoning = str(parsed.get("reasoning", ""))
         return AllocationDecision(date=as_of_date, weights=weights, reasoning=reasoning)

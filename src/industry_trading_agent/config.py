@@ -41,6 +41,8 @@ class TradingConfig:
     auto_select_industries: bool = False
     auto_select_top_n: int = 6
     min_event_count: int = 1
+    use_reports: bool = True
+    use_events: bool = True
 
 
 @dataclass
@@ -104,6 +106,8 @@ def load_config(path: str | Path) -> AppConfig:
             auto_select_industries=bool(trading_raw.get("auto_select_industries", False)),
             auto_select_top_n=int(trading_raw.get("auto_select_top_n", 6)),
             min_event_count=int(trading_raw.get("min_event_count", 1)),
+            use_reports=bool(trading_raw.get("use_reports", True)),
+            use_events=bool(trading_raw.get("use_events", True)),
         ),
         output=OutputConfig(
             output_dir=Path(output_raw.get("output_dir", "outputs")),

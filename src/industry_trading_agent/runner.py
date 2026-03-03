@@ -27,10 +27,10 @@ class BacktestRunner:
             market_index_file=self.config.data.market_index_file,
         )
 
-        all_events = loader.load_events(industries=None)
+        all_events = loader.load_events(industries=None) if self.config.trading.use_events else []
         industries = _resolve_industries(self.config, all_events)
 
-        reports = loader.load_reports(industries)
+        reports = loader.load_reports(industries) if self.config.trading.use_reports else []
         events = [e for e in all_events if e.industry in set(industries)]
         market_data = loader.load_market_data(industries)
         market_index = loader.load_market_index()
@@ -138,6 +138,8 @@ def _resolve_industries(config: AppConfig, events) -> list[str]:
 
     if not config.trading.auto_select_industries:
         raise ValueError("No industries configured. Set trading.industries or enable auto_select_industries.")
+    if not config.trading.use_events:
+        raise ValueError("auto_select_industries requires use_events=true when industries is empty.")
 
     start = pd.Timestamp(config.trading.start_date).date()
     end = pd.Timestamp(config.trading.end_date).date()

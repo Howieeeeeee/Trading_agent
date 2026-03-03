@@ -20,6 +20,8 @@ trading:
   auto_select_industries: true
   auto_select_top_n: 8
   min_event_count: 2
+  use_reports: true
+  use_events: true
   start_date: "2025-12-01"
   end_date: "2025-12-31"
   lookback_days: 20

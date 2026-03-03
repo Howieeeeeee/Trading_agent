@@ -16,6 +16,7 @@
 配置文件：
 - [example.yaml](/Users/howie/Documents/New project/config/example.yaml)
 - [rule_based.yaml](/Users/howie/Documents/New project/config/rule_based.yaml)
+- [price_only.yaml](/Users/howie/Documents/New project/config/price_only.yaml)（仅行情，不用研报/事件）
 
 ## 3. 服务器数据路径字段
 
@@ -67,7 +68,20 @@
 
 说明：当前 Agent 只需要一个 LLM 实例，不做多 key 并发池。
 
-## 7. 安装与运行
+## 7. 信息源开关（新增）
+
+`trading` 段支持：
+- `use_reports: true/false`
+- `use_events: true/false`
+
+示例：
+- 全信息模式：`use_reports: true`, `use_events: true`
+- 仅行情模式：`use_reports: false`, `use_events: false`
+
+注意：
+- 若 `industries: []` 且 `auto_select_industries: true`，则必须 `use_events: true`（因为自动选行业依赖事件频次）。
+
+## 8. 安装与运行
 
 ```bash
 conda activate Stock_report
@@ -95,7 +109,13 @@ trade-sim --config config/example.yaml
 trade-sim --config config/rule_based.yaml
 ```
 
-## 8. 输出
+仅行情模式：
+
+```bash
+trade-sim --config config/price_only.yaml
+```
+
+## 9. 输出
 
 `output.output_dir` 下：
 - `daily_records.csv`（含 `decision_date` 与 `execute_date`）

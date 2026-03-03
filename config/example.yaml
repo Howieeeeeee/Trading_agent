@@ -16,11 +16,11 @@ data:
 
 trading:
   # 可为空；为空时使用 auto_select_industries
-  industries: []
+  industries: ["互联网服务","通用设备","电池","汽车零部件","商业百货","半导体"]
   auto_select_industries: true
   auto_select_top_n: 8
   min_event_count: 2
-  start_date: "2025-06-01"
+  start_date: "2025-12-01"
   end_date: "2025-12-31"
   lookback_days: 20
   initial_cash: 1000000

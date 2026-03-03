@@ -1,0 +1,2 @@
+[console_scripts]
+trade-sim = industry_trading_agent.cli:main

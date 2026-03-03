@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: industry-trading-agent
+Version: 0.1.0
+Summary: LangChain-based industry trading environment and agent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: langchain>=0.3.0
+Requires-Dist: langchain-core>=0.3.0
+Requires-Dist: langchain-openai>=0.3.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: numpy>=1.26.0
+Requires-Dist: PyYAML>=6.0.1
+Requires-Dist: pypdf>=4.3.1
+
 # Industry Trading Agent (LangChain)
 
 面向“代码走 Git、原始数据只在 Linux 服务器”的行业交易回测系统。

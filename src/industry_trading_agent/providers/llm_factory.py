@@ -21,8 +21,9 @@ def build_llm(config: LLMConfig):
         }
         if config.base_url:
             kwargs["base_url"] = config.base_url
-        if config.api_key_env:
-            kwargs["api_key"] = os.getenv(config.api_key_env)
+        api_key = _resolve_api_key(config.api_key_env)
+        if api_key:
+            kwargs["api_key"] = api_key
         if config.extra:
             kwargs.update(config.extra)
         return ChatOpenAI(**kwargs)
@@ -52,3 +53,32 @@ def _load_class(path: str):
     module_name, class_name = path.split(":", 1)
     module = importlib.import_module(module_name)
     return getattr(module, class_name)
+
+
+def _resolve_api_key(api_key_env: str | None) -> str | None:
+    candidates: list[str] = []
+    if api_key_env:
+        candidates.extend([x.strip() for x in api_key_env.split(",") if x.strip()])
+
+    candidates.extend(
+        [
+            "OPENAI_API_KEY",
+            "OPENAI_API_KEY_2",
+            "OPENAI_API_KEY_3",
+            "OPENAI_API_KEY_4",
+            "OPENAI_API_KEY_5",
+            "OPENAI_API_KEY_6",
+            "OPENAI_API_KEY_7",
+            "OPENAI_API_KEY_8",
+        ]
+    )
+
+    seen = set()
+    for name in candidates:
+        if name in seen:
+            continue
+        seen.add(name)
+        value = os.getenv(name)
+        if value and value.strip():
+            return value.strip()
+    return None

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 from collections import Counter
-from datetime import date
+from datetime import date, datetime
+from pathlib import Path
 
 import pandas as pd
 
@@ -14,10 +16,14 @@ from .retrieval import ContextRetriever
 
 
 class BacktestRunner:
-    def __init__(self, config: AppConfig):
+    def __init__(self, config: AppConfig, config_path: str | Path | None = None):
         self.config = config
+        self.config_path = Path(config_path) if config_path else None
 
     def run(self) -> dict:
+        mode = _mode_from_config_path(self.config_path)
+        run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+
         loader = DataLoader(
             report_raw_dir=self.config.data.report_raw_dir,
             report_summary_dir=self.config.data.report_summary_dir,
@@ -70,6 +76,7 @@ class BacktestRunner:
 
         decisions: list[dict] = []
         daily_records: list[dict] = []
+        trading_logs: list[dict] = []
 
         # T day decides position for T+1 day, to avoid look-ahead bias.
         for i in range(len(trade_dates) - 1):
@@ -115,25 +122,75 @@ class BacktestRunner:
                 }
             )
 
+            referenced_files = sorted(
+                set(_collect_daily_files(context, loader, industries, self.config.data.market_index_file))
+            )
+            trading_logs.append(
+                {
+                    "mode": mode,
+                    "run_id": run_id,
+                    "config_file": str(self.config_path) if self.config_path else None,
+                    "decision_date": as_of_date.isoformat(),
+                    "execute_date": exec_date.isoformat(),
+                    "use_reports": self.config.trading.use_reports,
+                    "use_events": self.config.trading.use_events,
+                    "industries": industries,
+                    "referenced_files": referenced_files,
+                    "report_refs": context.get("report_refs", []),
+                    "event_refs": context.get("event_refs", []),
+                    "market_summary": context["market_summary"],
+                    "event_summary": context["event_summary"],
+                    "report_summary": context["report_summary"],
+                    "decision_weights": decision.weights,
+                    "decision_reasoning": decision.reasoning,
+                    "execution": {
+                        "nav_before": step.nav_before,
+                        "nav_after": step.nav_after,
+                        "pnl": step.pnl,
+                        "turnover": step.turnover,
+                        "transaction_cost": step.transaction_cost,
+                    },
+                }
+            )
+
         result = _build_result_summary(
             initial_nav=self.config.trading.initial_cash,
             final_nav=env.nav,
             daily_records=daily_records,
         )
         result["industries"] = industries
+        result["mode"] = mode
+        result["run_id"] = run_id
 
-        out_dir = self.config.output.output_dir
+        out_root = self.config.output.output_dir
+        out_dir = out_root / f"{mode}__{run_id}"
         out_dir.mkdir(parents=True, exist_ok=True)
 
-        pd.DataFrame(daily_records).to_csv(out_dir / "daily_records.csv", index=False)
-        pd.DataFrame(decisions).to_json(out_dir / "decisions.json", orient="records", force_ascii=False, indent=2)
-        pd.DataFrame([result]).to_json(out_dir / "summary.json", orient="records", force_ascii=False, indent=2)
+        daily_records_path = out_dir / "daily_records.csv"
+        decisions_path = out_dir / "decisions.json"
+        summary_path = out_dir / "summary.json"
+        trading_log_jsonl_path = out_dir / "trading_log.jsonl"
+        trading_log_json_path = out_dir / "trading_log.json"
+
+        pd.DataFrame(daily_records).to_csv(daily_records_path, index=False)
+        pd.DataFrame(decisions).to_json(decisions_path, orient="records", force_ascii=False, indent=2)
+        pd.DataFrame([result]).to_json(summary_path, orient="records", force_ascii=False, indent=2)
+        pd.DataFrame(trading_logs).to_json(trading_log_json_path, orient="records", force_ascii=False, indent=2)
+
+        with trading_log_jsonl_path.open("w", encoding="utf-8") as f:
+            for item in trading_logs:
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
         return {
             "summary": result,
-            "daily_records_path": str(out_dir / "daily_records.csv"),
-            "decisions_path": str(out_dir / "decisions.json"),
-            "summary_path": str(out_dir / "summary.json"),
+            "mode": mode,
+            "run_id": run_id,
+            "output_dir": str(out_dir),
+            "daily_records_path": str(daily_records_path),
+            "decisions_path": str(decisions_path),
+            "summary_path": str(summary_path),
+            "trading_log_json_path": str(trading_log_json_path),
+            "trading_log_jsonl_path": str(trading_log_jsonl_path),
         }
 
 
@@ -229,3 +286,32 @@ def _build_result_summary(initial_nav: float, final_nav: float, daily_records: l
         "max_drawdown": float(dd),
         "days": int(days),
     }
+
+
+def _mode_from_config_path(config_path: Path | None) -> str:
+    if not config_path:
+        return "manual"
+    stem = config_path.stem.strip().lower()
+    if not stem:
+        return "manual"
+    return stem
+
+
+def _collect_daily_files(context: dict, loader: DataLoader, industries: list[str], market_index_file: Path | None) -> list[str]:
+    files: list[str] = []
+    for ref in context.get("report_refs", []):
+        file_path = ref.get("file_path")
+        if file_path:
+            files.append(str(file_path))
+
+    if context.get("event_refs"):
+        files.append(str(loader.events_file))
+
+    for industry in industries:
+        market_file = loader._last_market_files.get(industry)
+        if market_file:
+            files.append(str(market_file))
+
+    if market_index_file:
+        files.append(str(market_index_file))
+    return files

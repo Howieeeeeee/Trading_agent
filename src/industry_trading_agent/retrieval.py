@@ -28,14 +28,16 @@ class ContextRetriever:
         lookback_days: int,
         max_reports_per_industry: int = 3,
         max_events_per_industry: int = 5,
-    ) -> dict[str, str]:
+    ) -> dict:
         market_summary = self._market_summary(as_of_date, industries, lookback_days)
-        event_summary = self._event_summary(as_of_date, industries, lookback_days, max_events_per_industry)
-        report_summary = self._report_summary(as_of_date, industries, lookback_days, max_reports_per_industry)
+        event_summary, event_refs = self._event_summary(as_of_date, industries, lookback_days, max_events_per_industry)
+        report_summary, report_refs = self._report_summary(as_of_date, industries, lookback_days, max_reports_per_industry)
         return {
             "market_summary": market_summary,
             "event_summary": event_summary,
             "report_summary": report_summary,
+            "event_refs": event_refs,
+            "report_refs": report_refs,
         }
 
     def _market_summary(self, as_of_date: date, industries: list[str], lookback_days: int) -> str:
@@ -69,7 +71,7 @@ class ContextRetriever:
 
     def _event_summary(
         self, as_of_date: date, industries: list[str], lookback_days: int, max_events_per_industry: int
-    ) -> str:
+    ) -> tuple[str, list[dict]]:
         start_date = as_of_date - timedelta(days=lookback_days)
         grouped: dict[str, list[EventRecord]] = defaultdict(list)
         industries_set = set(industries)
@@ -80,6 +82,7 @@ class ContextRetriever:
                 grouped[event.industry].append(event)
 
         lines: list[str] = []
+        refs: list[dict] = []
         for industry in industries:
             items = sorted(grouped[industry], key=lambda e: e.event_date, reverse=True)[:max_events_per_industry]
             if not items:
@@ -89,11 +92,20 @@ class ContextRetriever:
             for e in items:
                 content = _clean_snippet(e.content)
                 lines.append(f"  [{e.event_date}] {e.title} | {content}")
-        return "\n".join(lines)
+                refs.append(
+                    {
+                        "industry": industry,
+                        "event_date": e.event_date.isoformat(),
+                        "title": e.title,
+                        "report_date": e.report_date.isoformat() if e.report_date else None,
+                        "confidence": e.confidence,
+                    }
+                )
+        return "\n".join(lines), refs
 
     def _report_summary(
         self, as_of_date: date, industries: list[str], lookback_days: int, max_reports_per_industry: int
-    ) -> str:
+    ) -> tuple[str, list[dict]]:
         start_date = as_of_date - timedelta(days=lookback_days)
         grouped: dict[str, list[ReportDoc]] = defaultdict(list)
         industries_set = set(industries)
@@ -104,6 +116,7 @@ class ContextRetriever:
                 grouped[report.industry].append(report)
 
         lines: list[str] = []
+        refs: list[dict] = []
         for industry in industries:
             items = sorted(grouped[industry], key=lambda r: r.report_date, reverse=True)[:max_reports_per_industry]
             if not items:
@@ -113,7 +126,15 @@ class ContextRetriever:
             for r in items:
                 content = _clean_snippet(r.content)
                 lines.append(f"  [{r.report_date}] report_id={r.report_id} | {content}")
-        return "\n".join(lines)
+                refs.append(
+                    {
+                        "industry": industry,
+                        "report_id": r.report_id,
+                        "report_date": r.report_date.isoformat(),
+                        "file_path": r.file_path,
+                    }
+                )
+        return "\n".join(lines), refs
 
 
 def _clean_snippet(text: str, max_len: int = 240) -> str:

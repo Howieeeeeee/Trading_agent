@@ -124,7 +124,18 @@ trade-sim --config config/price_only.yaml
 
 ## 9. 输出
 
-`output.output_dir` 下：
+每次运行都会创建独立目录，规则：
+- `<output.output_dir>/<mode>__<YYYYmmdd_HHMMSS>/`
+- `mode` 默认取配置文件名（如 `example`、`price_only`）
+
+该目录下包括：
 - `daily_records.csv`（含 `decision_date` 与 `execute_date`）
 - `decisions.json`
 - `summary.json`
+- `trading_log.json`
+- `trading_log.jsonl`
+
+`trading_log` 按交易日记录：
+- 当日决策和次日执行信息
+- 参考文件列表（至少包含行情文件、事件文件/研报文件中实际引用到的文件）
+- 关键上下文摘要与模型推理结果

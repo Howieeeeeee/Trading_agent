@@ -14,7 +14,7 @@ def main() -> None:
     args = parser.parse_args()
 
     config = load_config(args.config)
-    runner = BacktestRunner(config)
+    runner = BacktestRunner(config, config_path=args.config)
     result = runner.run()
 
     print(json.dumps(result, ensure_ascii=False, indent=2))

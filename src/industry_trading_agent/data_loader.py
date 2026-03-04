@@ -22,6 +22,7 @@ class LoadedData:
     events: list[EventRecord]
     market_data: dict[str, pd.DataFrame]
     market_index: pd.DataFrame | None
+    market_files: dict[str, str]
 
 
 class DataLoader:
@@ -40,13 +41,20 @@ class DataLoader:
         self.market_dir = market_dir
         self.industry_match_file = industry_match_file
         self.market_index_file = market_index_file
+        self._last_market_files: dict[str, str] = {}
 
     def load_all(self, industries: list[str]) -> LoadedData:
         reports = self.load_reports(industries)
         events = self.load_events(industries)
         market_data = self.load_market_data(industries)
         market_index = self.load_market_index()
-        return LoadedData(reports=reports, events=events, market_data=market_data, market_index=market_index)
+        return LoadedData(
+            reports=reports,
+            events=events,
+            market_data=market_data,
+            market_index=market_index,
+            market_files=dict(self._last_market_files),
+        )
 
     def load_reports(self, industries: list[str]) -> list[ReportDoc]:
         industries_set = set(industries)
@@ -133,6 +141,7 @@ class DataLoader:
         mapping = self._load_industry_mapping()
 
         market_data: dict[str, pd.DataFrame] = {}
+        self._last_market_files = {}
         for industry in industries:
             file_path = self._resolve_industry_market_file(industry, mapping, code_to_file)
             if file_path is None:
@@ -150,6 +159,7 @@ class DataLoader:
             else:
                 df["ret_1d"] = df["close"].pct_change().fillna(0.0)
             market_data[industry] = df
+            self._last_market_files[industry] = str(file_path)
         if not market_data:
             raise FileNotFoundError(
                 f"No market files matched for selected industries. "

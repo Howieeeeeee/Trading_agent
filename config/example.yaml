@@ -9,8 +9,8 @@ llm:
 data:
   report_raw_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_pdfs
   report_summary_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_texts
-  events_file: /data/Graph_reasoning_Agent/Generate/significant_impact_events.csv
-  market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry
+  events_file: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/events/events_all.csv
+  market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry&concept
   industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_match_test_report.csv
   market_index_file: /data/Graph_reasoning_Agent/Generate/market_index_kline/沪深300__000300.csv
 
@@ -22,8 +22,8 @@ trading:
   min_event_count: 2
   use_reports: true
   use_events: true
-  start_date: "2025-12-01"
-  end_date: "2025-12-31"
+  start_date: "2025-11-01"
+  end_date: "2025-11-31"
   lookback_days: 20
   initial_cash: 1000000
   max_position: 0.35

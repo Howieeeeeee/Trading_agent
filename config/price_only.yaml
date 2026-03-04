@@ -11,7 +11,7 @@ data:
   report_summary_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_texts
   events_file: /data/Graph_reasoning_Agent/Generate/significant_impact_events.csv
   market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry
-  industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_match_test_report.csv
+  industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_concept_match_report.csv
   market_index_file: /data/Graph_reasoning_Agent/Generate/market_index_kline/沪深300__000300.csv
 
 trading:

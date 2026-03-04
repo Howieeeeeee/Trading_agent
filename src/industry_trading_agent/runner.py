@@ -33,6 +33,11 @@ class BacktestRunner:
         reports = loader.load_reports(industries) if self.config.trading.use_reports else []
         events = [e for e in all_events if e.industry in set(industries)]
         market_data = loader.load_market_data(industries)
+        industries = [i for i in industries if i in market_data]
+        if not industries:
+            raise ValueError("No tradable industries after industry/concept exact matching and market file filtering.")
+        reports = [r for r in reports if r.industry in set(industries)]
+        events = [e for e in events if e.industry in set(industries)]
         market_index = loader.load_market_index()
 
         retriever = ContextRetriever(

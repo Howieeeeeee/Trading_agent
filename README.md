@@ -25,7 +25,7 @@
 - `report_summary_dir`: 研报摘要目录（如 `.../report_texts`，优先读取）
 - `events_file`: 事件文件（可用 `events_all.csv` 或 `significant_impact_events.csv`）
 - `market_dir`: 行业板块行情目录（如 `半导体__BK1036.csv`）
-- `industry_match_file`: 行业到板块映射（`industry_match_test_report.csv`）
+- `industry_match_file`: 行业/概念到板块映射（`industry_concept_match_report.csv`）
 - `market_index_file`: 大盘指数文件（如沪深300）
 
 ## 4. 当前已适配的数据格式
@@ -48,6 +48,13 @@
 - 行业文件：`行业__BKxxxx.csv` 或 `行业.csv`
 - 必需列：`date, close`
 - 若有 `ret` 列，优先使用该收益列
+
+### 4.4 行业到板块匹配（新增规则）
+- 使用 `industry_concept_match_report.csv`
+- 匹配优先级：
+  1. `ind_status == exact` 的 `ind_bk_code`
+  2. 若 1 不可用，再用 `con_status == exact` 的 `con_bk_code`
+- 非 `exact`（如 `fuzzy`）一律不使用
 
 ## 5. 行业选择
 

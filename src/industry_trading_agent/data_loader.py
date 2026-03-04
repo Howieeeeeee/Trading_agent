@@ -136,10 +136,7 @@ class DataLoader:
         for industry in industries:
             file_path = self._resolve_industry_market_file(industry, mapping, code_to_file)
             if file_path is None:
-                raise FileNotFoundError(
-                    f"Missing market file for industry '{industry}'. "
-                    f"Check industry_match_file and files under {self.market_dir}"
-                )
+                continue
 
             df = pd.read_csv(file_path)
             required_cols = {"date", "close"}
@@ -153,6 +150,11 @@ class DataLoader:
             else:
                 df["ret_1d"] = df["close"].pct_change().fillna(0.0)
             market_data[industry] = df
+        if not market_data:
+            raise FileNotFoundError(
+                f"No market files matched for selected industries. "
+                f"Check industry_match_file and files under {self.market_dir}"
+            )
         return market_data
 
     def load_market_index(self) -> pd.DataFrame | None:
@@ -171,33 +173,60 @@ class DataLoader:
             df["ret_1d"] = 0.0
         return df
 
-    def _load_industry_mapping(self) -> dict[str, list[dict[str, str | float]]]:
+    def _load_industry_mapping(self) -> dict[str, list[dict[str, str]]]:
         if not self.industry_match_file or not self.industry_match_file.exists():
             return {}
 
         df = pd.read_csv(self.industry_match_file)
-        required = {"industry", "bk_code", "score"}
-        if not required.issubset(set(df.columns)):
-            return {}
+        cols = set(df.columns)
 
-        out: dict[str, list[dict[str, str | float]]] = {}
-        for _, row in df.iterrows():
-            industry = str(row.get("industry", "")).strip()
-            bk_code = str(row.get("bk_code", "")).strip().upper()
-            bk_name = str(row.get("bk_name", "")).strip()
-            score = _to_float(row.get("score")) or 0.0
-            if not industry or not bk_code:
-                continue
-            out.setdefault(industry, []).append({"bk_code": bk_code, "bk_name": bk_name, "score": score})
+        # New format: industry_concept_match_report.csv
+        # Priority: exact industry-board match -> exact concept-board match.
+        new_required = {"industry", "ind_status", "ind_bk_code", "con_status", "con_bk_code"}
+        if new_required.issubset(cols):
+            out_new: dict[str, list[dict[str, str]]] = {}
+            for _, row in df.iterrows():
+                industry = str(row.get("industry", "")).strip()
+                if not industry:
+                    continue
 
-        for industry in out:
-            out[industry] = sorted(out[industry], key=lambda x: float(x["score"]), reverse=True)
-        return out
+                picks: list[dict[str, str]] = []
+                ind_status = str(row.get("ind_status", "")).strip().lower()
+                ind_bk_code = str(row.get("ind_bk_code", "")).strip().upper()
+                ind_bk_name = str(row.get("ind_bk_name", "")).strip()
+                if ind_status == "exact" and ind_bk_code:
+                    picks.append({"bk_code": ind_bk_code, "bk_name": ind_bk_name, "source": "industry"})
+
+                con_status = str(row.get("con_status", "")).strip().lower()
+                con_bk_code = str(row.get("con_bk_code", "")).strip().upper()
+                con_bk_name = str(row.get("con_bk_name", "")).strip()
+                if con_status == "exact" and con_bk_code and con_bk_code != ind_bk_code:
+                    picks.append({"bk_code": con_bk_code, "bk_name": con_bk_name, "source": "concept"})
+
+                if picks:
+                    out_new[industry] = picks
+            return out_new
+
+        # Backward compatibility: industry_match_test_report.csv
+        old_required = {"industry", "bk_code", "score"}
+        if old_required.issubset(cols):
+            out_old: dict[str, list[dict[str, str]]] = {}
+            for _, row in df.iterrows():
+                industry = str(row.get("industry", "")).strip()
+                bk_code = str(row.get("bk_code", "")).strip().upper()
+                bk_name = str(row.get("bk_name", "")).strip()
+                score = _to_float(row.get("score")) or 0.0
+                if not industry or not bk_code or score < 0.5:
+                    continue
+                out_old.setdefault(industry, []).append({"bk_code": bk_code, "bk_name": bk_name, "source": "legacy"})
+            return out_old
+
+        return {}
 
     def _resolve_industry_market_file(
         self,
         industry: str,
-        mapping: dict[str, list[dict[str, str | float]]],
+        mapping: dict[str, list[dict[str, str]]],
         code_to_file: dict[str, Path],
     ) -> Path | None:
         # 1) direct name pattern: 行业__BKxxxx.csv
@@ -207,9 +236,6 @@ class DataLoader:
 
         # 2) via industry-match map
         for item in mapping.get(industry, []):
-            score = float(item["score"])
-            if score < 0.5:
-                continue
             bk_code = str(item["bk_code"]).upper()
             if bk_code in code_to_file:
                 return code_to_file[bk_code]

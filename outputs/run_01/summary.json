@@ -1,19 +1,19 @@
 [
   {
     "initial_nav":1000000.0,
-    "final_nav":1035145.2270443668,
-    "total_return":0.035145227,
-    "annualized_return":0.4853639837,
-    "annualized_volatility":0.145804864,
-    "sharpe":3.3288600288,
-    "max_drawdown":-0.0244362144,
-    "days":22,
+    "final_nav":979746.3378086266,
+    "total_return":-0.0202536622,
+    "annualized_return":-0.2376771791,
+    "annualized_volatility":0.253303325,
+    "sharpe":-0.938310538,
+    "max_drawdown":-0.0826653122,
+    "days":19,
     "industries":[
       "互联网服务",
       "通用设备",
       "电池",
       "汽车零部件",
-      "商业百货",
+      "化学制品",
       "半导体"
     ]
   }

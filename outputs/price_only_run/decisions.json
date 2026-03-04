@@ -1,287 +1,248 @@
 [
   {
-    "decision_date":"2025-12-01",
-    "execute_date":"2025-12-02",
-    "reasoning":"Given the recent performance and volatility of the industries, I will allocate capital primarily to the '互联网服务' and '商业百货' sectors, which have shown positive returns. The other sectors have negative returns and higher volatility, making them less attractive for investment. I will keep the allocations within the maximum single industry position limit of 0.35 and ensure the total weight does not exceed 1.0.",
+    "decision_date":"2025-11-03",
+    "execute_date":"2025-11-04",
+    "reasoning":"The allocation is based on maximizing risk-adjusted returns. The battery industry shows the highest window return but also the highest volatility, suggesting a higher risk. The internet services sector has a strong return with moderate volatility, making it a good candidate for a significant allocation. The chemical products and automotive parts sectors provide stable returns with lower volatility, allowing for a balanced approach. The semiconductor sector has negative returns and high volatility, so it is excluded from the allocation.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.15,
+      "电池":0.35,
+      "汽车零部件":0.15,
+      "化学制品":0.1,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-04",
+    "execute_date":"2025-11-05",
+    "reasoning":"To maximize risk-adjusted returns, I have increased the allocation to the '电池' industry due to its highest recent return and acceptable volatility. I have also slightly increased '互联网服务' and '化学制品' as they have positive returns and lower volatility. The allocation to '汽车零部件' has been reduced due to its negative return, while '半导体' remains at zero due to its poor performance. The total weight remains within the constraints.",
+    "weights":{
+      "互联网服务":0.3,
+      "通用设备":0.15,
+      "电池":0.35,
+      "汽车零部件":0.1,
+      "化学制品":0.05,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-05",
+    "execute_date":"2025-11-06",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to '电池' due to its high return despite its volatility. I will also increase '互联网服务' and '化学制品' slightly as they have shown stable returns with lower volatility. I will reduce '汽车零部件' to free up capital for these adjustments while keeping '半导体' at zero due to its negative return. The total weight remains within the constraints.",
+    "weights":{
+      "互联网服务":0.35,
+      "通用设备":0.15,
+      "电池":0.35,
+      "汽车零部件":0.05,
+      "化学制品":0.1,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-06",
+    "execute_date":"2025-11-07",
+    "reasoning":"To maximize risk-adjusted returns, I have increased the allocation to the industries with the highest recent returns while adhering to the risk constraints. The weights have been adjusted to maintain a balanced exposure without exceeding the maximum single industry position of 0.35. The allocation reflects a preference for industries with higher returns and manageable volatility.",
+    "weights":{
+      "互联网服务":0.3,
+      "通用设备":0.2,
+      "电池":0.25,
+      "汽车零部件":0.05,
+      "化学制品":0.1,
+      "半导体":0.1
+    }
+  },
+  {
+    "decision_date":"2025-11-07",
+    "execute_date":"2025-11-10",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to '电池' due to its high return potential despite its volatility. I will also increase '通用设备' and '化学制品' slightly as they have favorable returns and lower volatility. I will reduce '互联网服务' to maintain balance and avoid exceeding the maximum single industry position. The total weight will remain within the limit.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.25,
+      "电池":0.35,
+      "汽车零部件":0.05,
+      "化学制品":0.1,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-10",
+    "execute_date":"2025-11-11",
+    "reasoning":"Given the recent performance and volatility of the industries, I have decided to increase the allocation to the battery and chemical products sectors, which have shown strong returns relative to their volatility. I will also maintain the current positions in internet services and general equipment, while slightly reducing the automotive parts allocation to accommodate these changes. The semiconductor sector remains unallocated due to its low return and high volatility.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.25,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.1,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-11",
+    "execute_date":"2025-11-12",
+    "reasoning":"Given the recent performance and volatility of the industries, I have decided to increase the allocation to '电池' due to its high return potential despite its volatility. I will also increase '化学制品' slightly as it has a good return with lower volatility. '互联网服务' and '通用设备' will remain stable as they provide consistent returns. '汽车零部件' and '半导体' will not receive allocations due to their lower performance metrics. This allocation aims to maximize risk-adjusted returns while adhering to the constraints.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.25,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.15,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-12",
+    "execute_date":"2025-11-13",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to '电池' due to its high return potential despite its volatility. I will also increase '化学制品' slightly as it has a strong return with lower volatility. '互联网服务' and '通用设备' will remain stable as they provide consistent returns. '汽车零部件' and '半导体' will not receive allocations due to their lower performance. This allocation maximizes risk-adjusted returns while adhering to the constraints.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.25,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.1,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-13",
+    "execute_date":"2025-11-14",
+    "reasoning":"Given the recent performance and volatility of the industries, I have decided to increase the allocation to '电池' due to its high return despite its volatility. '化学制品' also shows a strong return with lower volatility, so I will maintain its position. I will reduce '互联网服务' and '通用设备' slightly to accommodate these changes while adhering to the risk constraints. '汽车零部件' and '半导体' will remain at zero due to their poor performance.",
+    "weights":{
+      "互联网服务":0.2222222222,
+      "通用设备":0.2222222222,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.1666666667,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-14",
+    "execute_date":"2025-11-17",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to the battery sector due to its strong return and acceptably high volatility. I will also increase the allocation to chemical products, which have shown a solid return with moderate volatility. The internet services and general equipment sectors will maintain their current allocations due to their stability despite recent negative returns. The semiconductor and automotive parts sectors will remain at zero allocation due to poor performance. This allocation aims to maximize risk-adjusted returns while adhering to the constraints.",
+    "weights":{
+      "互联网服务":0.2309335489,
+      "通用设备":0.2309335489,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.1386178627,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-17",
+    "execute_date":"2025-11-18",
+    "reasoning":"To maximize risk-adjusted returns, I have allocated more capital to the battery industry due to its high recent return despite its volatility. I have also increased the allocation to the chemical products industry, which has shown a solid return with moderate volatility. The internet services and general equipment industries maintain their positions due to stable performance. The automotive parts and semiconductor industries have been underperforming, so I have kept their allocations at zero to avoid losses.",
+    "weights":{
+      "互联网服务":0.2474761684,
+      "通用设备":0.2474761684,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.1485475701,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-18",
+    "execute_date":"2025-11-19",
+    "reasoning":"Given the recent performance and volatility of the industries, I will allocate more capital to the '电池' and '化学制品' sectors, which have shown strong returns. I will reduce exposure to '互联网服务' and '通用设备' due to their lower returns and maintain a zero position in '汽车零部件' and '半导体' as they have underperformed. This allocation aims to maximize risk-adjusted returns while adhering to the constraints.",
+    "weights":{
+      "互联网服务":0.2222222222,
+      "通用设备":0.1111111111,
+      "电池":0.35,
+      "汽车零部件":0.0,
+      "化学制品":0.2777777778,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-19",
+    "execute_date":"2025-11-20",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to '化学制品' due to its strong return and moderate volatility. I will also reduce the allocation to '电池' slightly to manage risk, while maintaining a position in '互联网服务' as it has a positive return. The other industries with negative returns will not receive additional capital.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.1,
+      "电池":0.3,
+      "汽车零部件":0.0,
+      "化学制品":0.35,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-20",
+    "execute_date":"2025-11-21",
+    "reasoning":"Given the recent performance and volatility of the industries, I will increase the allocation to the chemical products industry, which has shown positive returns and moderate volatility. I will reduce the allocation to the battery industry due to its high volatility and negative return. The remaining industries will have minimal adjustments to maintain a balanced approach while adhering to the risk constraints.",
+    "weights":{
+      "互联网服务":0.25,
+      "通用设备":0.1,
+      "电池":0.2,
+      "汽车零部件":0.1,
+      "化学制品":0.35,
+      "半导体":0.0
+    }
+  },
+  {
+    "decision_date":"2025-11-21",
+    "execute_date":"2025-11-24",
+    "reasoning":"Given the recent performance and volatility of the industries, I have decided to reduce exposure to the more volatile sectors while maintaining a balanced allocation. The chemical products sector has shown the least negative return and has a moderate volatility, making it a stable choice. I have also slightly increased the allocation to the internet services sector, which, despite its recent negative return, has a lower volatility compared to others. The battery sector remains high-risk, so I have reduced its weight. Overall, the allocation aims to balance risk and potential return while adhering to the constraints.",
+    "weights":{
+      "互联网服务":0.3,
+      "通用设备":0.1,
+      "电池":0.15,
+      "汽车零部件":0.1,
+      "化学制品":0.25,
+      "半导体":0.1
+    }
+  },
+  {
+    "decision_date":"2025-11-24",
+    "execute_date":"2025-11-25",
+    "reasoning":"Given the recent performance and volatility of the industries, I will allocate more capital to the '互联网服务' sector, which has shown a positive return despite the overall market downturn. The other sectors have negative returns and high volatility, which suggests a cautious approach. I will maintain the current positions in '通用设备', '电池', '汽车零部件', '化学制品', and '半导体' but will reduce their weights slightly to accommodate the increased allocation to '互联网服务'.",
+    "weights":{
+      "互联网服务":0.35,
+      "通用设备":0.1,
+      "电池":0.1,
+      "汽车零部件":0.1,
+      "化学制品":0.25,
+      "半导体":0.1
+    }
+  },
+  {
+    "decision_date":"2025-11-25",
+    "execute_date":"2025-11-26",
+    "reasoning":"Given the recent performance and volatility of the industries, I will maintain a higher allocation to '互联网服务' due to its positive return and lower volatility compared to others. The other industries have shown negative returns, so I will reduce their allocations while adhering to the maximum single industry position constraint. This will help in maximizing risk-adjusted returns while minimizing exposure to underperforming sectors.",
+    "weights":{
+      "互联网服务":0.35,
+      "通用设备":0.05,
+      "电池":0.05,
+      "汽车零部件":0.05,
+      "化学制品":0.25,
+      "半导体":0.25
+    }
+  },
+  {
+    "decision_date":"2025-11-26",
+    "execute_date":"2025-11-27",
+    "reasoning":"Given the recent performance and volatility of the industries, I will maintain a strong position in 互联网服务 due to its positive return and relatively lower volatility. I will reduce exposure in the underperforming sectors like 通用设备, 电池, 汽车零部件, and 半导体, while slightly increasing the allocation to 化学制品, which has shown less negative performance. This allocation aims to balance risk and potential returns while adhering to the constraints.",
     "weights":{
       "互联网服务":0.35,
       "通用设备":0.0,
       "电池":0.0,
       "汽车零部件":0.0,
-      "商业百货":0.35,
-      "半导体":0.3
+      "化学制品":0.3,
+      "半导体":0.35
     }
   },
   {
-    "decision_date":"2025-12-02",
-    "execute_date":"2025-12-03",
-    "reasoning":"Given the recent performance and volatility of the industries, I will maintain the current positions in 互联网服务 and 商业百货 due to their positive returns. I will reduce the position in 半导体 slightly to accommodate a new position in 通用设备, which, despite its negative return, has lower volatility and may provide stability. The allocation will ensure no single industry exceeds the 0.35 limit and total weight remains at 1.0.",
+    "decision_date":"2025-11-27",
+    "execute_date":"2025-11-28",
+    "reasoning":"Given the recent performance and volatility of the industries, I will maintain the current positions in 互联网服务 and 化学制品 due to their relatively better returns and lower volatility. I will allocate the remaining capital to 通用设备, which has the least negative return and volatility, while keeping within the risk constraints.",
     "weights":{
       "互联网服务":0.35,
-      "通用设备":0.15,
+      "通用设备":0.1875,
       "电池":0.0,
       "汽车零部件":0.0,
-      "商业百货":0.35,
-      "半导体":0.15
-    }
-  },
-  {
-    "decision_date":"2025-12-03",
-    "execute_date":"2025-12-04",
-    "reasoning":"Given the recent performance and volatility of the industries, I will reduce exposure to the underperforming sectors while reallocating to those with lower volatility and better risk-adjusted returns. I will maintain the maximum position in '互联网服务' and '商业百货' due to their relatively better performance, while increasing the position in '电池' to capitalize on potential recovery despite its high volatility. The total weight will remain within the constraints.",
-    "weights":{
-      "互联网服务":0.3181818182,
-      "通用设备":0.0909090909,
-      "电池":0.1818181818,
-      "汽车零部件":0.0909090909,
-      "商业百货":0.2272727273,
-      "半导体":0.0909090909
-    }
-  },
-  {
-    "decision_date":"2025-12-04",
-    "execute_date":"2025-12-05",
-    "reasoning":"Given the recent performance and volatility of the industries, I will reduce exposure to the underperforming sectors while increasing allocation to the semiconductor industry, which has shown a positive return. This adjustment aims to maximize risk-adjusted returns while adhering to the constraints.",
-    "weights":{
-      "互联网服务":0.25,
-      "通用设备":0.1,
-      "电池":0.1,
-      "汽车零部件":0.1,
-      "商业百货":0.2,
-      "半导体":0.25
-    }
-  },
-  {
-    "decision_date":"2025-12-05",
-    "execute_date":"2025-12-08",
-    "reasoning":"Given the recent performance, I will increase the allocation to the semiconductor industry, which has shown a positive return, while reducing exposure to the battery and commercial retail sectors that have underperformed significantly. This adjustment aims to maximize risk-adjusted returns while adhering to the constraints.",
-    "weights":{
-      "互联网服务":0.2,
-      "通用设备":0.1,
-      "电池":0.05,
-      "汽车零部件":0.1,
-      "商业百货":0.1,
-      "半导体":0.35
-    }
-  },
-  {
-    "decision_date":"2025-12-08",
-    "execute_date":"2025-12-09",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase the allocation to the semiconductor industry due to its strong return and moderate volatility. I have reduced the allocation to the battery industry due to its poor performance and high volatility. The other industries remain relatively stable, so I have made minor adjustments to maintain a balanced portfolio while adhering to the risk constraints.",
-    "weights":{
-      "互联网服务":0.2,
-      "通用设备":0.1,
-      "电池":0.03,
-      "汽车零部件":0.1,
-      "商业百货":0.1,
-      "半导体":0.35
-    }
-  },
-  {
-    "decision_date":"2025-12-09",
-    "execute_date":"2025-12-10",
-    "reasoning":"Given the recent performance and volatility of each industry, I have adjusted the weights to favor those with better returns and lower volatility. The allocation reflects a preference for industries with positive returns while adhering to the risk constraints.",
-    "weights":{
-      "互联网服务":0.2,
-      "通用设备":0.15,
-      "电池":0.05,
-      "汽车零部件":0.15,
-      "商业百货":0.2,
-      "半导体":0.25
-    }
-  },
-  {
-    "decision_date":"2025-12-10",
-    "execute_date":"2025-12-11",
-    "reasoning":"To maximize risk-adjusted returns, I have increased allocations to the industries with the highest recent returns and lower volatility while adhering to the risk constraints. The weights have been adjusted to reflect a more favorable outlook for commercial retail and semiconductors, while reducing exposure to underperforming sectors like batteries and internet services.",
-    "weights":{
-      "互联网服务":0.1,
-      "通用设备":0.2,
-      "电池":0.03,
-      "汽车零部件":0.15,
-      "商业百货":0.25,
-      "半导体":0.27
-    }
-  },
-  {
-    "decision_date":"2025-12-11",
-    "execute_date":"2025-12-12",
-    "reasoning":"Based on the recent performance and volatility of each industry, I have allocated more capital to the industries with higher returns and lower volatility while adhering to the risk constraints. The weights have been adjusted to maximize risk-adjusted returns without exceeding the maximum single industry position of 0.35 and ensuring the total weight is 1.0.",
-    "weights":{
-      "互联网服务":0.1,
-      "通用设备":0.25,
-      "电池":0.1,
-      "汽车零部件":0.15,
-      "商业百货":0.2,
-      "半导体":0.2
-    }
-  },
-  {
-    "decision_date":"2025-12-12",
-    "execute_date":"2025-12-15",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase allocations to the higher-performing sectors while adhering to the risk constraints. The semiconductor and commercial retail sectors have shown strong returns and reasonable volatility, making them attractive for increased investment. I have reduced exposure to the internet services and battery sectors due to their negative returns. The total weight remains within the limit, and no single industry exceeds the maximum position constraint.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.25,
-      "电池":0.05,
-      "汽车零部件":0.15,
-      "商业百货":0.25,
-      "半导体":0.25
-    }
-  },
-  {
-    "decision_date":"2025-12-15",
-    "execute_date":"2025-12-16",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase the allocation to the commercial retail sector due to its strong return and manageable volatility. The semiconductor sector also shows promise with a decent return and lower volatility, so I have maintained its allocation. The other sectors have been underperforming or have high volatility, leading to reduced allocations. This strategy aims to maximize risk-adjusted returns while adhering to the constraints.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.2,
-      "电池":0.05,
-      "汽车零部件":0.1,
-      "商业百货":0.3,
-      "半导体":0.3
-    }
-  },
-  {
-    "decision_date":"2025-12-16",
-    "execute_date":"2025-12-17",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase the allocation to the commercial retail sector due to its strong recent return, while slightly reducing the positions in internet services and battery sectors which have shown negative returns. The semiconductor and general equipment sectors have moderate returns and volatility, so I will maintain their current allocations. This approach aims to maximize risk-adjusted returns while adhering to the constraints.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.2,
-      "电池":0.03,
-      "汽车零部件":0.1,
-      "商业百货":0.35,
-      "半导体":0.27
-    }
-  },
-  {
-    "decision_date":"2025-12-17",
-    "execute_date":"2025-12-18",
-    "reasoning":"Given the recent performance and volatility of each industry, I have allocated more capital to the commercial retail sector due to its strong return and manageable volatility. The semiconductor sector also shows promise with a positive return and moderate volatility. I have reduced exposure to the internet services and battery sectors due to their negative returns, while maintaining a balanced approach across the other industries to adhere to risk constraints.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.2,
-      "电池":0.03,
-      "汽车零部件":0.1,
-      "商业百货":0.35,
-      "半导体":0.27
-    }
-  },
-  {
-    "decision_date":"2025-12-18",
-    "execute_date":"2025-12-19",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase the allocation to '商业百货' due to its strong return and manage risk by slightly reducing positions in '半导体' and '通用设备'. The other industries have shown negative returns and higher volatility, so I have kept their allocations minimal. This approach aims to maximize risk-adjusted returns while adhering to the constraints.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.15,
-      "电池":0.03,
-      "汽车零部件":0.1,
-      "商业百货":0.35,
-      "半导体":0.27
-    }
-  },
-  {
-    "decision_date":"2025-12-19",
-    "execute_date":"2025-12-22",
-    "reasoning":"Given the recent performance and volatility of each industry, I have decided to increase the allocation to '商业百货' due to its strong return and manage risk by reducing exposure to '电池' and '半导体' which have shown negative returns. '通用设备' and '汽车零部件' have stable returns and lower volatility, so I will maintain their positions. The total weight remains within the constraints.",
-    "weights":{
-      "互联网服务":0.0555555556,
-      "通用设备":0.1666666667,
-      "电池":0.0222222222,
-      "汽车零部件":0.1111111111,
-      "商业百货":0.35,
-      "半导体":0.2
-    }
-  },
-  {
-    "decision_date":"2025-12-22",
-    "execute_date":"2025-12-23",
-    "reasoning":"Given the recent performance and volatility of each industry, I have allocated more capital to the industries with better risk-adjusted returns while adhering to the constraints. The commercial retail sector shows strong returns despite high volatility, justifying its maximum allocation. The general equipment sector also performed well, so I increased its allocation. The semiconductor sector has a decent return with moderate volatility, so I maintained a significant position. The internet services and battery sectors have underperformed, leading to reduced allocations. Overall, the allocation aims to balance risk and return effectively.",
-    "weights":{
-      "互联网服务":0.05,
-      "通用设备":0.25,
-      "电池":0.02,
-      "汽车零部件":0.15,
-      "商业百货":0.35,
-      "半导体":0.18
-    }
-  },
-  {
-    "decision_date":"2025-12-23",
-    "execute_date":"2025-12-24",
-    "reasoning":"Given the recent performance and volatility of each industry, I have allocated more capital to the industries with higher returns and lower volatility while adhering to the risk constraints. The commercial retail sector shows strong returns despite high volatility, so I maintain its maximum allocation. The general equipment and semiconductor sectors also show promising returns with manageable volatility, so I increase their allocations. The internet services and battery sectors have underperformed, so I reduce their weights.",
-    "weights":{
-      "互联网服务":0.03,
-      "通用设备":0.3,
-      "电池":0.01,
-      "汽车零部件":0.15,
-      "商业百货":0.35,
-      "半导体":0.16
-    }
-  },
-  {
-    "decision_date":"2025-12-24",
-    "execute_date":"2025-12-25",
-    "reasoning":"Given the recent performance and volatility of the industries, I have allocated more capital to the industries with higher returns and lower volatility while adhering to the risk constraints. The allocation favors '通用设备', '汽车零部件', and '半导体' due to their favorable risk-return profiles. '商业百货' remains at its maximum due to its strong recent performance, while '互联网服务' is reduced due to negative returns.",
-    "weights":{
-      "互联网服务":0.01,
-      "通用设备":0.35,
-      "电池":0.05,
-      "汽车零部件":0.2,
-      "商业百货":0.35,
-      "半导体":0.04
-    }
-  },
-  {
-    "decision_date":"2025-12-25",
-    "execute_date":"2025-12-26",
-    "reasoning":"Given the recent performance and volatility of the industries, I have allocated more capital to the sectors with higher returns and manageable volatility while adhering to the risk constraints. The weights reflect a balanced approach to maximize risk-adjusted returns without exceeding the maximum position limits.",
-    "weights":{
-      "互联网服务":0.01,
-      "通用设备":0.35,
-      "电池":0.1,
-      "汽车零部件":0.25,
-      "商业百货":0.2,
-      "半导体":0.09
-    }
-  },
-  {
-    "decision_date":"2025-12-26",
-    "execute_date":"2025-12-29",
-    "reasoning":"Given the recent performance and volatility of each industry, I have allocated more capital to the commercial retail sector due to its strong return and manageable volatility. The allocation to general equipment and automotive parts is maintained due to their solid returns, while reducing exposure to internet services due to its negative return. The total weight remains within the constraints.",
-    "weights":{
-      "互联网服务":0.010989011,
-      "通用设备":0.2747252747,
-      "电池":0.1098901099,
-      "汽车零部件":0.2197802198,
-      "商业百货":0.35,
-      "半导体":0.0
-    }
-  },
-  {
-    "decision_date":"2025-12-29",
-    "execute_date":"2025-12-30",
-    "reasoning":"Given the recent performance and volatility of the industries, I will allocate more capital to the higher returning sectors while adhering to the risk constraints. The commercial retail sector has shown the highest return, so I will maintain its maximum allocation. The general equipment and automotive parts sectors also have strong returns and lower volatility, so I will increase their allocations slightly. The battery sector has a high volatility and lower return, so I will reduce its allocation. The internet services sector has underperformed, so I will keep its allocation minimal. The semiconductor sector will remain at zero due to its moderate performance and volatility.",
-    "weights":{
-      "互联网服务":0.0104166667,
-      "通用设备":0.3125,
-      "电池":0.0520833333,
-      "汽车零部件":0.2604166667,
-      "商业百货":0.35,
-      "半导体":0.0
-    }
-  },
-  {
-    "decision_date":"2025-12-30",
-    "execute_date":"2025-12-31",
-    "reasoning":"To maximize risk-adjusted returns, I have allocated more capital to the industries with higher recent returns and lower volatility. The allocation respects the maximum single industry position and total weight constraints while reducing exposure to underperforming sectors.",
-    "weights":{
-      "互联网服务":0.0,
-      "通用设备":0.35,
-      "电池":0.0,
-      "汽车零部件":0.35,
-      "商业百货":0.3,
+      "化学制品":0.35,
       "半导体":0.0
     }
   }

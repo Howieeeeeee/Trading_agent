@@ -9,27 +9,21 @@ llm:
 data:
   report_raw_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_pdfs
   report_summary_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/report_texts
-<<<<<<< Updated upstream
   events_file: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/events/events_all.csv
   market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry&concept
-  industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_match_test_report.csv
-=======
-  events_file: /data/Graph_reasoning_Agent/Generate/significant_impact_events.csv
-  market_dir: /data/Graph_reasoning_Agent/Generate/hangye_yanbao/bk_kline_by_industry
   industry_match_file: /data/Graph_reasoning_Agent/Generate/industry_concept_match_report.csv
->>>>>>> Stashed changes
   market_index_file: /data/Graph_reasoning_Agent/Generate/market_index_kline/沪深300__000300.csv
 
 trading:
   # 可为空；为空时使用 auto_select_industries
-  industries: ["互联网服务","通用设备","电池","汽车零部件","商业百货","半导体"]
+  industries: ["互联网服务","通用设备","电池","汽车零部件","化学制品","半导体"]
   auto_select_industries: true
   auto_select_top_n: 8
   min_event_count: 2
   use_reports: true
   use_events: true
   start_date: "2025-11-01"
-  end_date: "2025-11-31"
+  end_date: "2025-11-30"
   lookback_days: 20
   initial_cash: 1000000
   max_position: 0.35
